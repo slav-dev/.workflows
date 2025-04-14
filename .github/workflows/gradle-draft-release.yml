@@ -39,6 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      discussions: write
     steps:
       - name: Fetch Sources
         uses: actions/checkout@v4
