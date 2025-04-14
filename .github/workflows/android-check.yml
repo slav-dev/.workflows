@@ -45,7 +45,6 @@ jobs:
           distribution: zulu
           java-version: 17
       - name: Run Detekt
-        if: ${{ always() }}
         run: ./gradlew detekt --stacktrace
       - name: Generate Detekt Annotations
         if: ${{ always() }}
@@ -69,7 +68,6 @@ jobs:
           distribution: zulu
           java-version: 17
       - name: Run Lint
-        if: ${{ always() }}
         run: ./gradlew lint --stacktrace
       - name: Generate Lint Annotations
         if: ${{ always() }}
