@@ -1,0 +1,37 @@
+name: Patch Changelog
+
+on:
+  workflow_call:
+    inputs:
+      tag_name:
+        required: true
+        type: string
+
+jobs:
+  patchChangelog:
+    name: Patch Changelog
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag_name }}
+      - name: Setup Java
+        uses: actions/setup-java@v4.2.1
+        with:
+          distribution: zulu
+          java-version: 17
+      - name: Patch Changelog
+        run: ./gradlew patchChangelog
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Update changelog" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
