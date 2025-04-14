@@ -4,15 +4,11 @@ on:
   workflow_call:
 
 jobs:
-
   validateGradle:
-    name: Validate Gradle Wrapper
+    name: Validate
     runs-on: ubuntu-latest
-
     steps:
-
       - name: Fetch Sources
         uses: actions/checkout@v4
-
       - name: Validate Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v4

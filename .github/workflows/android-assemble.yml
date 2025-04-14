@@ -8,21 +8,16 @@ on:
         type: string
 
 jobs:
-
   assemble:
-    name: Assemble Android Project
+    name: Assemble
     runs-on: ubuntu-latest
-
     steps:
-
       - name: Fetch Sources
         uses: actions/checkout@v4
-
       - name: Setup Java
         uses: actions/setup-java@v4.7.0
         with:
           distribution: zulu
           java-version: 17
-
       - name: Assemble Android Project
         run: ./gradlew assemble${{ inputs.variant }} --stacktrace
