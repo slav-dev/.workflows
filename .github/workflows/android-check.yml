@@ -4,52 +4,73 @@ on:
   workflow_call:
 
 jobs:
-
-  runChecks:
-    name: Run Checks
+  test:
+    name: Test
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       issues: read
       checks: write
       pull-requests: write
-
     steps:
-
       - name: Fetch Sources
         uses: actions/checkout@v4
-
       - name: Setup Java
         uses: actions/setup-java@v4.7.0
         with:
           distribution: zulu
           java-version: 17
-
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest --continue --stacktrace
-
       - name: Publish Test Report
         if: ${{ always() }}
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           check_name: "Unit Test Results"
           files: '**/build/test-results/**/*.xml'
-
+  detekt:
+    name: Lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4.7.0
+        with:
+          distribution: zulu
+          java-version: 17
       - name: Run Detekt
         if: ${{ always() }}
         run: ./gradlew detekt --stacktrace
-
       - name: Generate Detekt Annotations
         if: ${{ always() }}
         uses: jwgmeligmeyling/checkstyle-github-action@master
         with:
           path: '**/detekt.xml'
-
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4.7.0
+        with:
+          distribution: zulu
+          java-version: 17
       - name: Run Lint
         if: ${{ always() }}
         run: ./gradlew lint --stacktrace
-
       - name: Generate Lint Annotations
         if: ${{ always() }}
         uses: yutailang0119/action-android-lint@v4
