@@ -2,6 +2,10 @@ name: Draft Release
 
 on:
   workflow_call:
+    inputs:
+      discussion_category_name:
+        required: false
+        type: string
 
 jobs:
   exportProperties:
@@ -52,4 +56,6 @@ jobs:
           name: v${{ needs.exportProperties.outputs.version }}
           body: ${{ needs.exportProperties.outputs.changelog }}
           draft: true
+          prerelease: ${{ contains(needs.exportProperties.outputs.version, '-') }}
+          discussion_category_name: ${{ inputs.discussion_category_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
