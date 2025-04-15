@@ -22,4 +22,4 @@ jobs:
         name: Count Git Commits
         env:
           TIME: ${{ inputs.time }}
-        run: echo "result=$(git rev-list --count --all --max-age=$($(date +%s) - ($TIME)))" >> $GITHUB_OUTPUT
+        run: echo "result=$(git rev-list --count --all --max-age=$(expr $(date +%s) - $TIME))" >> $GITHUB_OUTPUT
