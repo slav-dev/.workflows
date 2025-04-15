@@ -1,0 +1,25 @@
+name: Count Git Commits
+
+on:
+  workflow_call:
+    inputs:
+      time:
+        required: true
+        type: number
+    outputs:
+      commitsCount:
+        description: "Number of git commits"
+        value: ${{ jobs.countCommits.outputs.result }}
+
+jobs:
+  countCommits:
+    name: Count Commits
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.count.outputs.result }}
+    steps:
+      - id: count
+        name: Count Git Commits
+        env:
+          TIME: ${{ inputs.time }}
+        run: echo "result=$(git rev-list --count --all --max-age=$($(date +%s) - ($TIME)))" >> $GITHUB_OUTPUT
