@@ -18,6 +18,8 @@ jobs:
     outputs:
       result: ${{ steps.count.outputs.result }}
     steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v4
       - id: count
         name: Count Git Commits
         env:
